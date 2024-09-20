@@ -1,11 +1,6 @@
 {
   "extends": "./tsconfig.json", // A path to another configuration file to inherit from
   "compilerOptions": {
-    // Make up the bulk of TS’s configuration
-    "declaration": true, // Generates `.d.ts` files, which describe the external API of your module
-    "declarationDir": "types", // The root directory for where declaration files are emitted
-    "declarationMap": true, // Generates a source map for `.d.ts` files which map back to the original `.ts` source file
-    "inlineSourceMap": true, // Instead of writing out a `.js.map` file to provide source maps, TS will embed the source map content in the `.js` files
     "inlineSources": true, // TS will include the original content of the `.ts` file as an embedded string in the source map
     "removeComments": false, // Removes all comments from the output
     "sourceMap": true // Files allow debuggers and other tools to display the original TS source code when actually working with the emitted JS files

@@ -36,6 +36,8 @@ By transforming daily tasks and goals into engaging challenges, GPM encourages u
 
     ```bash
     docker compose up --detach --force-recreate --remove-orphans
+    # To run containers with re-built images, use the following command:
+    docker compose up --detach --force-recreate --remove-orphans --build
     ```
 
 2. To shutdown the GPM backend `Docker` containers, use the following command:
@@ -55,3 +57,10 @@ By transforming daily tasks and goals into engaging challenges, GPM encourages u
 
 - [10 best practices to containerize Node.js](https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/)
 - [How to Use the Postgres Docker Official Image](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)
+- [How to install curl on Alpine Linux](https://www.cyberciti.biz/faq/how-to-install-curl-on-alpine-linux/)
+
+**Node Platform:**
+
+- [The fastest Node web framework in 2024](https://medium.com/deno-the-complete-reference/node-js-the-fastest-web-framework-in-2024-fa11e513fa75)
+- [Web Frameworks Benchmark](https://web-frameworks-benchmark.netlify.app/result?asc=0&l=javascript&order_by=level64)
+- [A gigabytes-per-second JSON parser](https://github.com/luizperes/simdjson_nodejs#simdjson_nodejs)

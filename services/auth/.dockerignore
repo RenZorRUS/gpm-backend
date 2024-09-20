@@ -2,6 +2,7 @@
 .git
 .cache
 .husky
+.env.example
 dist
 node_modules
 .gitignore

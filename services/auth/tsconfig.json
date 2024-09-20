@@ -6,9 +6,8 @@
     "tests/**/*.ts",
     "build/*.ts"
   ],
-  "exclude": ["node_modules"], // Filenames or patterns that should be skipped when resolving `include`
+  "exclude": ["node_modules", "dist", ".cache"], // Filenames or patterns that should be skipped when resolving `include`
   "compilerOptions": {
-    // Make up the bulk of TS’s configuration
     "allowUnreachableCode": false, // Raises compiler errors about unreachable code
     "allowUnusedLabels": false, // Raises compiler errors about unused labels
     "alwaysStrict": true, // Files are parsed in the ECMAScript strict mode
@@ -18,7 +17,6 @@
     "noImplicitOverride": true, // Ensures that the sub-classes never go out of sync, by ensuring that functions which `override` include the keyword override
     "noImplicitReturns": true, // Will check all code paths in a `function` to ensure they return a value
     "noImplicitThis": true, // Raise error on ‘this’ expressions with an implied ‘any’ type
-    "noPropertyAccessFromIndexSignature": true, // Ensures consistency between accessing a field via the “dot” (`obj.key`) syntax, and “indexed” (`obj["key"]`)
     "noUncheckedIndexedAccess": true, // Will add `undefined` to any un-declared field in the `type`
     "noUnusedLocals": true, // Report errors on unused local variables
     "noUnusedParameters": true, // Report errors on unused parameters in functions
