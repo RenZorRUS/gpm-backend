@@ -1,0 +1,12 @@
+# Docker ignore file: https://docs.docker.com/build/concepts/context/#dockerignore-files
+.git
+.cache
+.husky
+dist
+node_modules
+.gitignore
+.dockerignore
+pnpm-lock.yaml
+README.md
+*Dockerfile*
+*docker-compose*

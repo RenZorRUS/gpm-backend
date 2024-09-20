@@ -1,0 +1,50 @@
+# Docker Compose Reference: https://docs.docker.com/reference/compose-file/
+
+name: gpm-backend                   # Default project name to be used
+
+services:                           # Computing resources within an app which can be scaled or replaced independently from other components
+  database:                         # Contains the configuration that is applied to service container
+    cpu_count: 1                    # Number of usable CPUs for service container
+    container_name: postgres        # Specifies a custom container name
+    expose:                         # Port or a range of ports that Compose exposes from the container
+      - 5432
+    networks:                       # Defines the networks that service containers are attached to
+      - database
+    healthcheck:                    # Declares a check that's run to determine whether or not the service containers are "healthy"
+      test: [                       # Defines the command Compose runs to check container health
+        "CMD-SHELL",                # Runs the command using the container's default shell `/bin/sh`
+        "psql -U postgres -d postgres-db -c 'SELECT 1' || exit 1"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    image: postgres:16.4-alpine3.20 # Specifies the image to start the container from: https://hub.docker.com/_/postgres
+    restart: on-failure:3           # Restarts the container limited times if the exit code indicates an error
+    ports:                          # Define the port mappings between the host machine and the containers
+      - 5432:5432
+    environment:                    # Defines environment variables set in the container
+      POSTGRES_PASSWORD: root       # Sets the superuser password for PostgreSQL (required)
+      POSTGRES_USER: postgres       # Set a database user
+      POSTGRES_DB: postgres-db      # Defines a different name for the default database
+    volumes:                        # Define mount host paths or named volumes that are accessible by service containers
+      - ./postgres-db:/var/lib/postgresql/data
+
+  auth:
+    cpu_count: 1
+    container_name: auth-service    # Specifies a custom container name
+    restart: on-failure:3
+    expose:
+      - 8081
+    depends_on:                     # Control the order of service startup and shutdown
+      - database
+    networks:
+      - database
+    build:                          # Tells Compose how to (re)build an app from source and define the build process
+      context: services/auth        # Defines a path to a directory containing a Dockerfile
+      dockerfile: Dockerfile.prod   # Dockerfile is resolved from the build contex
+    ports:
+      - 8081:8081
+
+networks:                           # Configures named networks that can be reused across multiple services
+  database:                         # Database network
+   name: postgres-network           # A custom name for the network

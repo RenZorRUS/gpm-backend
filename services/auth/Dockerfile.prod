@@ -1,0 +1,27 @@
+# Dockerfile reference: https://docs.docker.com/reference/dockerfile/#from
+# Node Docker Image: https://hub.docker.com/_/node
+FROM node:20.17.0-alpine3.20 AS builder
+
+WORKDIR /usr/src/app
+COPY . .
+
+RUN npm install --global pnpm
+RUN pnpm install --dev && pnpm install --save-dev find-up
+RUN pnpm lint:fix
+RUN pnpm build:prod
+
+RUN rm -rf node_modules
+RUN pnpm install --prod --ignore-scripts
+
+FROM node:20.17.0-alpine3.20 AS prod
+
+ENV NODE_ENV=production
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/node_modules node_modules
+COPY --from=builder /usr/src/app/dist dist
+
+EXPOSE 8081
+
+ENTRYPOINT [ "node", "dist/bundle.prod.mjs" ]
