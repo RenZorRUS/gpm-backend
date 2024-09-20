@@ -1,0 +1,58 @@
+{
+  "name": "auth",
+  "version": "0.0.1",
+  "description": "Authorization service for Gamified Personal Manager Backend",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.16.0",
+    "pnpm": ">=9.10.0"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build:prod": "npx esr build/esbuild.prod.ts",
+    "build:dev": "npx esr build/esbuild.dev.ts",
+    "run:dev": "pnpm build:dev && node dist/bundle.dev.mjs",
+    "run:prod": "cross-env NODE_ENV=production pnpm build:prod && node dist/bundle.prod.mjs",
+    "run:dev:direct": "pnpm exec esr src/index.ts",
+    "watch": "npx esr build/esbuild.watch.ts | node --watch dist/bundle.dev.mjs",
+    "test": "echo \"Error: no test specified\"",
+    "lint:fix": "prettier . --write --cache --cache-location=.cache/prettier --cache-strategy metadata && eslint . --fix --cache --cache-location=.cache/.eslintcache",
+    "prepare": "cd ../.. && husky services/auth/.husky"
+  },
+  "keywords": [
+    "JavaScript",
+    "TypeScript",
+    "Node",
+    "ESBuild",
+    "ESLint",
+    "Prettier"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier . --write --cache --cache-location .cache/prettier --cache-strategy metadata",
+      "eslint . --fix --cache --cache-location .cache/.eslintcache"
+    ]
+  },
+  "author": "Roman & Stanislav",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "@types/node": "^22.5.5",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.23.1",
+    "esbuild-runner": "^2.2.2",
+    "eslint": "^9.10.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.9.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.6.0"
+  }
+}

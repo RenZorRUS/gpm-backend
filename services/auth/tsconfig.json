@@ -1,0 +1,85 @@
+// tsconfig.json - indicates that the directory is the root of a TS project
+{
+  "include": [
+    // Filenames or patterns to include in the program
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "build/*.ts"
+  ],
+  "exclude": ["node_modules"], // Filenames or patterns that should be skipped when resolving `include`
+  "compilerOptions": {
+    // Make up the bulk of TS’s configuration
+    "allowUnreachableCode": false, // Raises compiler errors about unreachable code
+    "allowUnusedLabels": false, // Raises compiler errors about unused labels
+    "alwaysStrict": true, // Files are parsed in the ECMAScript strict mode
+    "exactOptionalPropertyTypes": true, // Applies stricter rules around how it handles properties on `type` or `interfaces` which have a `?` prefix
+    "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statements
+    "noImplicitAny": true, // TS will fall back to a type of `any` for a variable when it cannot infer the type
+    "noImplicitOverride": true, // Ensures that the sub-classes never go out of sync, by ensuring that functions which `override` include the keyword override
+    "noImplicitReturns": true, // Will check all code paths in a `function` to ensure they return a value
+    "noImplicitThis": true, // Raise error on ‘this’ expressions with an implied ‘any’ type
+    "noPropertyAccessFromIndexSignature": true, // Ensures consistency between accessing a field via the “dot” (`obj.key`) syntax, and “indexed” (`obj["key"]`)
+    "noUncheckedIndexedAccess": true, // Will add `undefined` to any un-declared field in the `type`
+    "noUnusedLocals": true, // Report errors on unused local variables
+    "noUnusedParameters": true, // Report errors on unused parameters in functions
+    "strict": true, // Enables a wide range of type checking behavior that results in stronger guarantees of program correctness
+    "strictBindCallApply": true, // Will check that the built-in methods of functions `call`, `bind`, and `apply` are invoked with correct argument for the underlying function
+    "strictBuiltinIteratorReturn": true, // Built-in iterators are instantiated with a `TReturn` type of undefined instead of `any`
+    "strictFunctionTypes": true, // Causes functions parameters to be checked more correctly
+    "strictNullChecks": true, // `null` and `undefined` have their own distinct types
+    "strictPropertyInitialization": true, // TS will raise an error when a class property was declared but not set in the `constructor`
+    "useUnknownInCatchVariables": true, // Ensures that error handling code becomes more comprehensive because you cannot guarantee that the object being thrown is a `Error` subclass ahead of time
+    "allowArbitraryExtensions": true, // When an import path ends in an extension that isn’t a known JS or TS file extension, the compiler will look for a declaration file for that path in the form of `{file basename}.d.{extension}.ts`
+    "allowUmdGlobalAccess": true, // Lets us access UMD exports as globals from inside module files. A module file - is a file that has `import` and/or `export`
+    "baseUrl": ".", // A base directory from which to resolve bare specifier module names
+    "module": "ESNext", // The module system for the program
+    "moduleResolution": "Bundler", // Supports both ECMAScript imports and CommonJS `require`, which resolve using different algorithms
+    "noResolve": false, // Will examine the initial set of files for `import` and `<reference` directives
+    "noUncheckedSideEffectImports": true, // In JS it’s possible to `import` a module without actually importing any values from it, these imports are called `side effect` imports because they can executing some side effect (like registering a global variable, or adding a polyfill to a prototype).
+    "paths": null, // Re-map imports to lookup locations relative to the `baseUrl` if set
+    "resolveJsonModule": true, // Allows importing modules with a `.json` extension
+    "resolvePackageJsonExports": true, // Forces TS to consult the exports field of `package.json` files if it ever reads from a package in `node_modules`
+    "types": ["node"], // Only packages listed will be included in the `global` scope
+    "downlevelIteration": false, // Allows the use of `for-of` transpiling it to an older version of JS
+    "emitBOM": false, // Controls whether TS will emit a byte order mark (BOM) when writing output files
+    "importHelpers": false, // Helper functions are instead imported from the `tslib` module
+    "newLine": "lf", // Specify the end of line sequence to be used when emitting files
+    "noEmit": false, // Do not emit compiler output files like JS source code, source-maps or declarations
+    "noEmitHelpers": true, // Completely turn off emitting of helper functions
+    "noEmitOnError": true, // Do not emit compiler output files like JS source code, source-maps or declarations if any errors were reported
+    "outDir": "dist", // `.js` (as well as `.d.ts`, `.js.map`, etc.) files will be emitted into this directory
+    "preserveConstEnums": true, // `const enum`s provide a way to reduce memory of your app at runtime by emitting the enum value instead of a reference
+    "stripInternal": true, // Do not emit `.d.ts` declarations for code that has an `@internal` annotation in its JSDoc comment
+    "allowJs": true, // Allow `.js` files to be imported inside your project, instead of just `.ts` and `.tsx` files
+    "checkJs": true, // Enables type errors that are reported in JS files
+    "maxNodeModuleJsDepth": 0, // The maximum dependency depth to search under `node_modules` and load JS files
+    "disableSizeLimit": false, // Avoid a possible memory bloat issues when working with very large JS projects
+    "allowSyntheticDefaultImports": true, // Converts `import *` to `import <name>`
+    "esModuleInterop": false, // TS treats CommonJS/AMD/UMD modules similar to ES6 modules
+    "forceConsistentCasingInFileNames": true, // TS follows the case sensitivity rules of the file system it’s running on
+    "isolatedDeclarations": false, // Require sufficient annotation on exports so other tools can trivially generate declaration files
+    "isolatedModules": true, // Warns you if you write certain code that can’t be correctly interpreted by a single-file transpilation process
+    "verbatimModuleSyntax": true, // TS detects that you’re only using an `import` for types and drops the `import` entirely
+    "noImplicitUseStrict": false, // Disables implicit `use strict`
+    "noStrictGenericChecks": false, // TS will unify type parameters when comparing 2 generic functions
+    "preserveValueImports": false, // Prevent TS from removing the import, even if it appears unused
+    "suppressExcessPropertyErrors": false, // Disables reporting of excess property errors
+    "suppressImplicitAnyIndexErrors": false, // Suppresses reporting the error about implicit `any` when indexing into objects
+    "emitDecoratorMetadata": false, // Enables experimental support for emitting type metadata for decorators
+    "experimentalDecorators": false, // Enables experimental support for decorators
+    "jsx": "react-jsx", // Controls how JSX constructs are emitted in JavaScript files
+    "moduleDetection": "auto", // TS will not only look for `import` statements, but it will also check whether the "type" field in a `package.json` is set to "module"
+    "noLib": false, // Disables the automatic inclusion of any library files
+    "target": "ESNext", // Changes which JS features are down-leveled and which are left intact
+    "diagnostics": false, // Used to output diagnostic information for debugging
+    "generateCpuProfile": null, // TS emit a v8 CPU profile during the compiler run
+    "listEmittedFiles": true, // Print names of generated files part of the compilation to the terminal
+    "listFiles": false, // Print names of files part of the compilation
+    "noCheck": false, // Disables type checking
+    "composite": true, // Make it possible for build tools to quickly determine if a project has been built yet
+    "noErrorTruncation": false, // Do not truncate error messages
+    "preserveWatchOutput": true, // Whether to keep outdated console output in watch mode instead of clearing the screen every time a change happened
+    "pretty": true, // Stylize errors and messages using color and context
+    "assumeChangesOnlyAffectDirectDependencies": true // TS will only recheck/rebuild files that have changed as well as files that directly import them
+  }
+}

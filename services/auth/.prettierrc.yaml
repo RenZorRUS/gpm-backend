@@ -1,0 +1,18 @@
+# Prettier format options: https://prettier.io/docs/en/options
+experimentalTernaries: false
+printWidth: 80
+tabWidth: 2
+useTabs: false
+semi: true
+singleQuote: true
+quoteProps: 'as-needed'
+jsxSingleQuote: true
+trailingComma: 'all'
+bracketSpacing: true
+bracketSameLine: false
+arrowParens: 'always'
+requirePragma: false
+proseWrap: 'always'
+endOfLine: 'lf'
+embeddedLanguageFormatting: 'auto'
+singleAttributePerLine: true
