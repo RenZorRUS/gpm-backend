@@ -1,0 +1,32 @@
+// Defines your application models (also called Prisma models)
+// Map to the tables (relational databases like PostgreSQL)
+// Docs: https://www.prisma.io/docs/orm/prisma-schema/data-model/models#defining-models
+
+enum Gender {
+  FEMALE @map("female")
+  MALE   @map("male")
+}
+
+model User {
+  id                             BigInt    @id @default(autoincrement()) @db.BigInt
+  firstName                      String    @map("first_name") @db.VarChar(50)
+  lastName                       String    @map("last_name") @db.VarChar(50)
+  middleName                     String?   @map("middle_name") @db.VarChar(50)
+  passwordHash                   String?   @map("password_hash") @db.VarChar(255)
+  email                          String    @unique @db.VarChar(255)
+  phone                          String?   @unique @db.VarChar(30)
+  gender                         Gender?
+  dateOfBirth                    DateTime? @map("date_of_birth") @db.Date
+  isActive                       Boolean   @default(true) @map("is_active") @db.Boolean
+  isEmailVerified                Boolean   @default(false) @map("is_email_verified") @db.Boolean
+  emailActivationToken           String?   @map("email_activation_token") @db.VarChar(255)
+  emailActivationTokenExpiration DateTime? @map("email_activation_token_expiration") @db.Timestamp(3)
+  isPhoneVerified                Boolean   @default(false) @map("is_phone_verified") @db.Boolean
+  phoneActivationCode            String?   @map("phone_activation_code") @db.VarChar(10)
+  phoneActivationCodeExpiration  DateTime? @map("phone_activation_code_expiration") @db.Timestamp(3)
+  createdAt                      DateTime  @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt                      DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+  deletedAt                      DateTime? @map("deleted_at") @db.Timestamp(3)
+
+  @@map("users") // Maps the Prisma schema model name to a table
+}

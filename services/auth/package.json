@@ -1,24 +1,26 @@
 {
-  "name": "auth",
-  "version": "0.0.2",
-  "description": "Authorization service for Gamified Personal Manager Backend",
+  "name": "auth-service",
+  "version": "0.0.5",
+  "description": "Authorization service for gamified personal manager application",
   "type": "commonjs",
-  "main": "dist/src/index.js",
+  "main": "dist/bundle.prod.mjs",
   "engines": {
     "node": ">=20.16.0",
     "pnpm": ">=9.10.0"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build:prod": "npx esr build/esbuild.prod.ts",
-    "build:dev": "npx esr build/esbuild.dev.ts",
-    "run:dev": "pnpm build:dev && node dist/bundle.dev.mjs",
-    "run:prod": "cross-env NODE_ENV=production pnpm build:prod && node dist/bundle.prod.mjs",
-    "run:dev:direct": "pnpm exec esr src/index.ts",
-    "watch": "npx esr build/esbuild.watch.ts | node --watch dist/bundle.dev.mjs",
-    "test": "echo \"Error: no test specified\"",
-    "lint:fix": "prettier . --write --cache --cache-location=.cache/prettier --cache-strategy metadata && eslint . --fix --cache --cache-location=.cache/.eslintcache",
-    "prepare": "cd ../.. && husky services/auth/.husky"
+    "build:prod": "esr build/esbuild.prod.ts",
+    "build:dev": "esr build/esbuild.dev.ts",
+    "run:dev": "pnpm build:dev && node --env-file=.env dist/bundle.dev.mjs",
+    "run:prod": "pnpm build:prod && cross-env NODE_ENV=production node --env-file=.env dist/bundle.prod.mjs",
+    "run:dev:direct": "esr src/index.ts",
+    "watch": "esr build/esbuild.watch.ts | node --env-file=.env --watch dist/bundle.dev.mjs",
+    "test": "pnpm check:ts && NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.mjs --detectOpenHandles --passWithNoTests",
+    "format:fix": "prettier . --write --cache --cache-location=.cache/prettier --cache-strategy metadata",
+    "lint:fix": "eslint . --fix --cache --cache-location=.cache/.eslintcache --ignore-pattern dist",
+    "check:fix": "pnpm format:fix && pnpm lint:fix",
+    "check:ts": "tsc --noEmit"
   },
   "keywords": [
     "JavaScript",
@@ -28,38 +30,37 @@
     "ESLint",
     "Prettier"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier . --write --cache --cache-location .cache/prettier",
-      "eslint . --fix --cache --cache-location .cache/.eslintcache --ignore-pattern dist"
-    ]
-  },
-  "author": "Roman & Stanislav",
+  "author": "Roman Z. & Stanislav Y.",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.10.0",
+    "@faker-js/faker": "^9.0.3",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.13",
     "@types/node": "^22.5.5",
+    "@types/tmp": "^0.2.6",
     "cross-env": "^7.0.3",
     "esbuild": "^0.23.1",
     "esbuild-runner": "^2.2.2",
     "eslint": "^9.10.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.9.0",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10",
+    "jest": "^29.7.0",
     "pino-pretty": "^11.2.2",
     "prettier": "^3.3.3",
+    "tmp-promise": "^3.0.3",
+    "ts-jest": "^29.2.5",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.6.0"
   },
   "dependencies": {
-    "@fastify/env": "^5.0.0",
+    "@fastify/swagger": "^9.0.0",
+    "@fastify/swagger-ui": "^5.0.1",
+    "compile-json-stringify": "^0.1.2",
+    "fast-jwt": "^4.0.5",
     "fastify": "^5.0.0",
-    "fluent-json-schema": "^5.0.0"
+    "fastify-plugin": "^5.0.1",
+    "fluent-json-schema": "^5.0.0",
+    "undici": "^6.19.8"
   }
 }

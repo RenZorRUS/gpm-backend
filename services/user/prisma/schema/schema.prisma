@@ -1,0 +1,18 @@
+// The Prisma Schema - is the main method of configuration for your Prisma ORM setup
+// Docs: https://pris.ly/d/prisma-schema
+
+// Determines which assets are created when you run the `prisma generate` command
+generator client {
+  provider        = "prisma-client-js" // Which Prisma Client (language specific) is created
+  engineType      = "library" // Query engine type to download and use
+  binaryTargets   = ["native"] // The OS on which the Prisma Client will run to ensure compatibility of the query engine
+  previewFeatures = ["prismaSchemaFolder"] // Support for multiple Prisma Schema files
+}
+
+// Determines how Prisma ORM connects your database
+datasource db {
+  provider     = "postgresql" // Data source connectors to use
+  url          = env("DB_URL") // Connection URL
+  directUrl    = env("DIRECT_DB_URL") // Direct connection URL to the database used for migrations
+  relationMode = "foreignKeys" // Enforces relations between records at the database level with foreign keys
+}

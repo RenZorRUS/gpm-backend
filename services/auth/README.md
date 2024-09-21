@@ -16,11 +16,14 @@ It provides endpoints for user registration, login, and token refresh. The servi
 | [ESbuild](https://esbuild.github.io/getting-started/) | An extremely fast bundler for the web | `0.23.1` |
 | [ESLint](https://eslint.org) | TypeScript statical code analyzer | `9.10.0` |
 | [Prettier](https://prettier.io/) | An opinionated code formatter | `3.3.3` |
-| [Husky](https://typicode.github.io/husky/) | Ultra-fast modern native `git` hooks | `9.1.6` |
-| [Lint-staged](https://github.com/lint-staged/lint-staged#-lint-staged) | Linter for staged `git` files | `15.2.10` |
 | [Docker](https://www.docker.com/) | A platform designed to help developers build, share, and run container applications | `27.2.0` |
 | [Fastify](https://fastify.dev/) | Fast and low overhead web framework, for Node.js | `5.0.0` |
 | [Fluent-json-schema](https://github.com/fastify/fluent-json-schema/tree/master#fluent-json-schema) | Fluent API to generate JSON schemas | `5.0.0` |
+| [Fastify-swagger](https://github.com/fastify/fastify-swagger#fastifyswagger) | Serving [Swagger (OpenAPI v2)](https://swagger.io/specification/v2/) or [OpenAPI v3](https://swagger.io/specification) schemas | `9.0.0` |
+| [Jest](https://jestjs.io/) | JavaScript Testing Framework | `29.7.0` |
+| [Faker](https://fakerjs.dev/) | Generate massive amounts of fake (but realistic) data for testing and development | `9.0.3` |
+| [Undici](https://github.com/nodejs/undici) | An HTTP/1.1 client, written from scratch for Node.js. | `6.19.8` |
+| [Fast-jwt](https://github.com/nearform/fast-jwt#fast-jwt) | Fast JSON Web Token implementation. | `4.0.5` |
 
 ## How to set up
 
@@ -29,44 +32,21 @@ It provides endpoints for user registration, login, and token refresh. The servi
 1. Download project (i.e. service) dependencies using the following command:
 
     ```bash
-    pnpm install --ignore-scripts
+    pnpm install
     ```
 
-2. Initialize [`Husky`](https://typicode.github.io/husky/get-started.html#install) pre-commit checker tool using the following commands:
+2. To create and verify authorization JWT tokens, you need to generate `EdDSA` keys using the following command:
 
     ```bash
-    pnpm exec husky init
-    ```
+    $ openssl genpkey -algorithm ED25519 | tee ./ed25519.pem
+    -----BEGIN PRIVATE KEY-----
+    MC4CAQAwBQYDK2VwBCIEICrDqHiXizmAHQYFnwX6dE/qP8KblxKXYEucmVZTbMwy
+    -----END PRIVATE KEY-----
 
-3. Copy the following content to the file `.husky/pre-commit`:
-
-    ```bash
-    # Git pre-commit hooks: https://typicode.github.io/husky/how-to.html
-    # Git include a `-n`/`--no-verify` option to skip hooks
-    cd services/auth
-    pnpm test
-    npx lint-staged
-    ```
-
-4. Update the `"prepare"` script in the `package.json` file to the following command:
-
-    ```bash
-    cd ../.. && husky services/auth/.husky
-    ```
-
-5. Link the pre-commit checker to your `git` repository using the following command:
-
-    ```bash
-    pnpm prepare
-    ```
-
-6. Clear the previous `.husky/_/husky.sh` content and copy the following content to the file `.husky/_/husky.sh`:
-
-    ```bash
-    #!/usr/bin/env sh
-    . "$(dirname -- "$0")/_/husky.sh"
-
-    npx lint-staged --allow-empty
+    $ openssl pkey -in ./ed25519.pem -pubout | tee ./ed25519.pub.pem
+    -----BEGIN PUBLIC KEY-----
+    MCowBQYDK2VwAyEA/DIbglGpx4BhW+yFV3q8A7xgmrIS0QtPU1ABUMps+UM=
+    -----END PUBLIC KEY-----
     ```
 
 ## How to run
@@ -171,6 +151,13 @@ To run the authorization service, you have three possible options:
     - It will automatically launch a `JavaScript Debug Terminal`
     - It compiles TypeScript using `esbuild` utility
     - By the left source maps in the compiled code, it connect breakpoint from TypeScript source code to compiled JavaScript code in `dist` folder
+
+### How to see available API endpoints
+
+1. Launch the service in development mode according to the
+   [steps](#how-to-run) described above.
+
+2. Service integrated with [Swagger UI](https://swagger.io/tools/swagger-ui/), so to see available API endpoints, open the browser and navigate to the following URL: `http://<SERVICE_HOST>:<SERVICE_PORT>/swagger/docs`
 
 ## References
 

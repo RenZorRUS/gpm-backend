@@ -1,41 +1,28 @@
-import createFastifyServer, { type FastifyPluginAsync } from 'fastify';
-import envPlugin from '@fastify/env';
-import getServerOptions, { getServerListenOptions } from 'src/configs/server';
-import getEnvOptions from 'src/configs/env';
-import isMainModule from 'src/utilities/common';
-import addRoutesPlugin from 'src/routes';
+import type { IEnvConfig } from 'src/application/types/global';
+import getServerOptions, {
+  getServerListenOptions,
+} from 'src/infrastructure/configs/server';
+import buildServerAsync from 'src/infrastructure/server';
+import isMainModule from 'src/infrastructure/utilities/common.utils';
 
-/**
- * Everything in Fastify is a plugin.
- * Plugin allows us easily import it in our testing suite and
- * add this application as a sub-component of another Fastify app.
- */
-const initServerPlugin: FastifyPluginAsync = async (server): Promise<void> => {
-  const envOptions = getEnvOptions(process.env.NODE_ENV);
-  await server.register(envPlugin, envOptions);
-  await server.register(addRoutesPlugin, { prefix: server.config.API_PREFIX });
-};
-
-/**
- * Entry point of our application
- */
-const runServerAsync = async (): Promise<void> => {
-  const serverOptions = getServerOptions(process.env.NODE_ENV);
-  const server = createFastifyServer(serverOptions);
-
-  await server.register(initServerPlugin);
+/** Entry point of the authorization service */
+const runServerAsync = async (
+  isProduction: boolean,
+  envConfig: IEnvConfig,
+): Promise<void> => {
+  const serverOptions = getServerOptions(isProduction);
+  const server = await buildServerAsync(serverOptions, envConfig, isProduction);
 
   try {
-    const listenOptions = getServerListenOptions(process.env);
+    const listenOptions = getServerListenOptions(envConfig);
     await server.listen(listenOptions);
   } catch (error) {
     server.log.error(error);
-    process.exit(1);
+    await server.close();
   }
 };
 
-if (isMainModule()) {
-  runServerAsync();
+if (isMainModule(process.argv)) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  runServerAsync(isProduction, process.env);
 }
-
-export default initServerPlugin;

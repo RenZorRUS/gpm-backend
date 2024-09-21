@@ -13,7 +13,7 @@ services:                           # Computing resources within an app which ca
     healthcheck:                    # Declares a check that's run to determine whether or not the service containers are "healthy"
       test: [                       # Defines the command Compose runs to check container health
         "CMD-SHELL",                # Runs the command using the container's default shell `/bin/sh`
-        "psql -U postgres -d postgres-db -c 'SELECT 1' || exit 1"
+        "psql --username=root --dbname=postgres-db --command='SELECT 1' || exit 1"
       ]
       interval: 10s
       timeout: 5s
@@ -24,14 +24,44 @@ services:                           # Computing resources within an app which ca
       - 5432:5432
     environment:                    # Defines environment variables set in the container
       POSTGRES_PASSWORD: root       # Sets the superuser password for PostgreSQL (required)
-      POSTGRES_USER: postgres       # Set a database user
+      POSTGRES_USER: root           # Set a database user
       POSTGRES_DB: postgres-db      # Defines a different name for the default database
     volumes:                        # Define mount host paths or named volumes that are accessible by service containers
       - ./postgres-db:/var/lib/postgresql/data
 
+  # A RabbitMQ node    - is process, running on a server, which provides core RabbitMQ features
+  #                      You need at least one RabbitMQ node.
+  # A RabbitMQ cluster - is simply a grouping of one or more RabbitMQ nodes
+  message-queue:
+    cpu_count: 1
+    container_name: rabbitmq
+    expose:
+      - 5672
+      - 15672
+    networks:
+      - message-queue
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 15s
+      timeout: 15s
+      retries: 3
+    image: rabbitmq:4.0.2-management-alpine
+    restart: on-failure:3
+    ports:
+      - 5672:5672                   # Used for client connections to RabbitMQ (AMQP 1.0)
+      - 15672:15672                 # Used to access the RabbitMQ Management UI
+    hostname: gpm-rabbitmq          # RabbitMQ stores data based on the "Node Name" (e.g. rabbit@$HOSTNAME), defaults to the hostname
+    environment:
+      RABBITMQ_DEFAULT_USER: root   # The default user for the RabbitMQ server
+      RABBITMQ_DEFAULT_PASS: root   # The default password for the RabbitMQ server
+      RABBITMQ_NODE_PORT: 5672
+    volumes:
+      # Contains sub-directories for the RabbitMQ server's node database, message store and cluster state files, one for each node
+      - ./rabbitmq:/var/lib/rabbitmq/mnesia
+
   auth:
     cpu_count: 1
-    container_name: auth-service    # Specifies a custom container name
+    container_name: auth-service
     restart: on-failure:3
     healthcheck:
       test: curl --fail http://localhost:8081/api/status || exit 1
@@ -50,6 +80,31 @@ services:                           # Computing resources within an app which ca
     ports:
       - 8081:8081
 
+  user:
+    cpu_count: 1
+    container_name: user-service
+    restart: on-failure:3
+    healthcheck:
+      test: curl --fail http://localhost:8082/api/status || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    expose:
+      - 8082
+    depends_on:
+      - database
+      - message-queue
+    networks:
+      - database
+      - message-queue
+    build:
+      context: services/user
+      dockerfile: Dockerfile.prod
+    ports:
+      - 8082:8082
+
 networks:                           # Configures named networks that can be reused across multiple services
   database:                         # Database network
    name: postgres-network           # A custom name for the network
+  message-queue:
+    name: rabbitmq-network

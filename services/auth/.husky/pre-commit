@@ -1,5 +1,0 @@
-# Contains git pre-commit hooks (docs: https://typicode.github.io/husky/how-to.html)
-# NOTE: git include a `-n`/`--no-verify` option to skip hooks
-cd services/auth
-pnpm test
-npx lint-staged

@@ -1,0 +1,38 @@
+# Dockerfile reference: https://docs.docker.com/reference/dockerfile/#from
+# Node Docker Image: https://hub.docker.com/_/node
+FROM node:20.17.0-alpine3.20 AS builder
+
+WORKDIR /usr/src/app
+
+COPY . .
+COPY .env.docker .env
+
+RUN npm install --global pnpm
+RUN pnpm add --save-dev find-up
+RUN pnpm add --dev
+RUN pnpm check:fix
+RUN pnpm db:sync
+RUN pnpm prisma generate
+RUN pnpm build:prod
+
+RUN rm -rf node_modules
+RUN pnpm add --prod --ignore-scripts
+
+FROM node:20.17.0-alpine3.20 AS prod
+
+ENV NODE_ENV=production
+
+WORKDIR /usr/src/app
+
+# Update apk database indexes from all configured packages
+# Apply all pending security updates on Alpine Linux
+RUN apk add curl
+
+COPY --from=builder /usr/src/app/.env.docker .env
+COPY --from=builder /usr/src/app/prisma prisma
+COPY --from=builder /usr/src/app/dist/bundle.prod.mjs dist/bundle.prod.mjs
+COPY --from=builder /usr/src/app/node_modules node_modules
+
+EXPOSE 8082
+
+ENTRYPOINT [ "node", "dist/bundle.prod.mjs" ]

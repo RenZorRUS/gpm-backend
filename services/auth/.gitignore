@@ -129,8 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Pnpm
-pnpm-lock.yaml
-
 # Husky
 .husky/_
+
+# Keys
+ed25519.*
