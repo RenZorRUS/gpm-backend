@@ -19,6 +19,8 @@ It provides endpoints for user registration, login, and token refresh. The servi
 | [Husky](https://typicode.github.io/husky/) | Ultra-fast modern native `git` hooks | `9.1.6` |
 | [Lint-staged](https://github.com/lint-staged/lint-staged#-lint-staged) | Linter for staged `git` files | `15.2.10` |
 | [Docker](https://www.docker.com/) | A platform designed to help developers build, share, and run container applications | `27.2.0` |
+| [Fastify](https://fastify.dev/) | Fast and low overhead web framework, for Node.js | `5.0.0` |
+| [Fluent-json-schema](https://github.com/fastify/fluent-json-schema/tree/master#fluent-json-schema) | Fluent API to generate JSON schemas | `5.0.0` |
 
 ## How to set up
 
@@ -155,6 +157,20 @@ To run the authorization service, you have three possible options:
         # Production bundle
         node dist/bundle.prod.mjs
         ```
+
+## How to Debug the Service in Visual Studio Code
+
+1. Place some breakpoints in the TypeScript source code, where you want to debug.
+
+2. Open the Command Palette in Visual Studio Code by pressing `Ctrl + Shift + P` (Windows/Linux) or `Cmd + Shift + P` (macOS).
+
+3. Type `Debug: Select and Start Debugging` in the Command Palette and select `Node.js...` from the dropdown list.
+
+4. In the dropdown list, choose the following option: `Run Script: run:dev`
+
+    - It will automatically launch a `JavaScript Debug Terminal`
+    - It compiles TypeScript using `esbuild` utility
+    - By the left source maps in the compiled code, it connect breakpoint from TypeScript source code to compiled JavaScript code in `dist` folder
 
 ## References
 

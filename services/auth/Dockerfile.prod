@@ -19,8 +19,13 @@ ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
 
+# Update apk database indexes from all configured packages
+# Apply all pending security updates on Alpine Linux
+RUN apk add curl
+
+COPY --from=builder /usr/src/app/.env .env
+COPY --from=builder /usr/src/app/dist/bundle.prod.mjs dist/bundle.prod.mjs
 COPY --from=builder /usr/src/app/node_modules node_modules
-COPY --from=builder /usr/src/app/dist dist
 
 EXPOSE 8081
 

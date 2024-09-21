@@ -1,8 +1,9 @@
 {
   "name": "auth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Authorization service for Gamified Personal Manager Backend",
   "type": "commonjs",
+  "main": "dist/src/index.js",
   "engines": {
     "node": ">=20.16.0",
     "pnpm": ">=9.10.0"
@@ -34,8 +35,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier . --write --cache --cache-location .cache/prettier --cache-strategy metadata",
-      "eslint . --fix --cache --cache-location .cache/.eslintcache"
+      "prettier . --write --cache --cache-location .cache/prettier",
+      "eslint . --fix --cache --cache-location .cache/.eslintcache --ignore-pattern dist"
     ]
   },
   "author": "Roman & Stanislav",
@@ -51,8 +52,14 @@
     "globals": "^15.9.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
+    "pino-pretty": "^11.2.2",
     "prettier": "^3.3.3",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.6.0"
+  },
+  "dependencies": {
+    "@fastify/env": "^5.0.0",
+    "fastify": "^5.0.0",
+    "fluent-json-schema": "^5.0.0"
   }
 }
