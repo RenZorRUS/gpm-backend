@@ -3,7 +3,6 @@
   "include": [
     // Filenames or patterns to include in the program
     "src/**/*.ts",
-    "tests/**/*.ts",
     "build/*.ts"
   ],
   "exclude": ["node_modules", "dist", ".cache"], // Filenames or patterns that should be skipped when resolving `include`
@@ -11,7 +10,7 @@
     "allowUnreachableCode": false, // Raises compiler errors about unreachable code
     "allowUnusedLabels": false, // Raises compiler errors about unused labels
     "alwaysStrict": true, // Files are parsed in the ECMAScript strict mode
-    "exactOptionalPropertyTypes": true, // Applies stricter rules around how it handles properties on `type` or `interfaces` which have a `?` prefix
+    "exactOptionalPropertyTypes": false, // Applies stricter rules around how it handles properties on `type` or `interfaces` which have a `?` prefix
     "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statements
     "noImplicitAny": true, // TS will fall back to a type of `any` for a variable when it cannot infer the type
     "noImplicitOverride": true, // Ensures that the sub-classes never go out of sync, by ensuring that functions which `override` include the keyword override

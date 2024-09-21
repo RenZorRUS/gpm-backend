@@ -1,0 +1,36 @@
+{
+  "name": "gpm-backend",
+  "version": "0.0.4",
+  "description": "Backend for a gamified personal manager application.",
+  "author": "Roman Z. & Stanislav Y.",
+  "license": "ISC",
+  "keywords": [
+    "Backend",
+    "TypeScript",
+    "ESBuild",
+    "ESLint",
+    "Prettier",
+    "Prisma",
+    "Fastify",
+    "RabbitMQ",
+    "Docker"
+  ],
+  "workspaces": [
+    "services/*"
+  ],
+  "engines": {
+    "node": ">=20.16.0",
+    "pnpm": ">=9.10.0"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "test": "pnpm --recursive test",
+    "check:fix": "pnpm --recursive check:fix",
+    "lint:staged": "pnpm lint-staged --allow-empty",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
+  }
+}

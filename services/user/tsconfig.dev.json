@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json", // A path to another configuration file to inherit from
+  "compilerOptions": {
+    "inlineSources": true, // TS will include the original content of the `.ts` file as an embedded string in the source map
+    "removeComments": false, // Removes all comments from the output
+    "sourceMap": true // Files allow debuggers and other tools to display the original TS source code when actually working with the emitted JS files
+  }
+}

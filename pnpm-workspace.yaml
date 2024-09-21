@@ -1,0 +1,3 @@
+# Docs: https://pnpm.io/workspaces
+packages:
+  - services/*

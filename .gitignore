@@ -1,2 +1,12 @@
+# MacOS
+.DS_Store
+
 # Docker Volumes
 postgres-db
+rabbitmq
+
+# Node
+node_modules
+
+# Hushy
+.husky
